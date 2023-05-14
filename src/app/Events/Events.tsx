@@ -1,6 +1,9 @@
 "use client";
 import { useQuery, gql } from "@apollo/client";
 import Event from "./components/Event";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 export type Conferences = {
   id: string;
@@ -86,11 +89,43 @@ const GET_DATA = gql`
 `;
 export default function Events() {
   const { loading, error, data } = useQuery(GET_DATA);
-
+  const [search, setSearch] = useState("");
+  const filteredEvents =
+    data &&
+    data.conferences.filter((event: any) =>
+      event.name.toLowerCase().includes(search)
+    );
+  const handleSearchInputChange = (event: any) => {
+    setSearch(event.target.value);
+  };
   return (
     <>
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2  border-blue-900"></div>
+        </div>
+      )}
+
+      <div className="mt-4 flex justify-center items-center">
+        <FontAwesomeIcon icon={faSearch} className="mx-2"></FontAwesomeIcon>
+        <input
+          value={search}
+          onChange={handleSearchInputChange}
+          placeholder="Search Event"
+          className="border rounded w-1/3 p-3 h-8"
+        />
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-8 m-4">
-        {data
+        {search && filteredEvents
+          ? filteredEvents.map((item: Conferences, index: number) => {
+              return (
+                <div key={index}>
+                  <Event confrence={item} />
+                </div>
+              );
+            })
+          : data
           ? data.conferences.map((item: Conferences, index: number) => {
               return (
                 <div key={index}>

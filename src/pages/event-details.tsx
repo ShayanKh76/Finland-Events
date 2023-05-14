@@ -12,7 +12,8 @@ import {
   faLinkedin,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
-import { faCalendar } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCalendar } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 const GET_DATA = gql`
   {
@@ -107,11 +108,6 @@ export default function EventDetails() {
   const router = useRouter();
   const eventId = router.query.eventId; // Access the passed data
   const { loading, error, data } = useQuery(GET_DATA);
-  console.log(
-    data
-      ? data.conferences.find((item: Conferences) => item.id == eventId)
-      : null
-  );
   const [event, setEvent] = useState<Conferences>();
   useEffect(() => {
     if (data) {
@@ -123,6 +119,18 @@ export default function EventDetails() {
 
   return (
     <div>
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2  border-blue-900"></div>
+        </div>
+      )}
+      {!loading && (
+        <div>
+          <Link href="/" className="flex absolute left-5 top-9 text-2xl">
+            <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
+          </Link>
+        </div>
+      )}
       <div style={header}>
         <span className="text-4xl flex items-center">{event?.slogan}</span>
       </div>
