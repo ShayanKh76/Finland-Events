@@ -1,93 +1,12 @@
 "use client";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Event from "./components/Event";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
 import DateFilter from "./components/DateFilter";
+import { Conferences, GET_DATA } from "./events.graphql";
 
-export type Conferences = {
-  id: string;
-  series: {
-    id: number;
-    name: string;
-    conferences: {
-      name: string;
-      id: number;
-    };
-  };
-  name: string;
-  organizer: {
-    name: string;
-    image: {
-      url: string;
-      title: string;
-      style: {
-        backgroundSize: number;
-      };
-    };
-    social: {
-      twitter: string;
-      github: string;
-      facebook: string;
-      linkedin: string;
-      youtube: string;
-    };
-  };
-  slogan: string;
-  websiteUrl: string;
-  locations: {
-    city: string;
-    address: string;
-    name: string;
-  };
-  year: string;
-  startDate: string;
-  endDate: string;
-};
-const GET_DATA = gql`
-  {
-    conferences {
-      id
-      series {
-        id
-        name
-        conferences {
-          name
-          id
-        }
-      }
-      name
-      organizer {
-        name
-        image {
-          url
-          title
-          style {
-            backgroundSize
-          }
-        }
-        social {
-          twitter
-          github
-          facebook
-          linkedin
-          youtube
-        }
-      }
-      slogan
-      websiteUrl
-      locations {
-        city
-        address
-        name
-      }
-      year
-      startDate
-      endDate
-    }
-  }
-`;
 export default function Events() {
   const { loading, error, data } = useQuery(GET_DATA);
   const [search, setSearch] = useState("");
@@ -140,7 +59,6 @@ export default function Events() {
 
       {showFilter && (
         <div className="absolute right-2 top-40 p-3 mt-1 border rounded-md bg-white w-72">
-          {/* Date filter component */}
           <DateFilter onFilter={handleFilter} />
         </div>
       )}
@@ -183,15 +101,14 @@ export default function Events() {
                   </div>
                 );
               })
-            : data
-            ? data.conferences.map((item: Conferences, index: number) => {
+            : data &&
+              data.conferences.map((item: Conferences, index: number) => {
                 return (
                   <div key={index}>
                     <Event confrence={item} />
                   </div>
                 );
-              })
-            : null}
+              })}
         </div>
       )}
     </>

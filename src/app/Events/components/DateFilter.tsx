@@ -5,7 +5,6 @@ export default function DateFilter({ onFilter }: any) {
   const [endDate, setEndDate] = useState("");
 
   const handleFilter = () => {
-    // Perform filtering logic based on startDate and endDate
     onFilter(startDate, endDate);
   };
   const handleClear = () => {

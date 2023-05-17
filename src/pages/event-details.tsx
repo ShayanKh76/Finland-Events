@@ -1,7 +1,6 @@
 "use client";
-import { Conferences } from "@/app/Events/Events";
 import Image from "next/image";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,108 +13,22 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faArrowLeft, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { GET_DATA } from "./event-details/event-details.graphql";
+import { header } from "./event-details/event-details.styles";
+import { Conferences } from "@/app/Events/events.graphql";
 
-const GET_DATA = gql`
-  {
-    conferences {
-      id
-      series {
-        id
-        name
-        conferences {
-          name
-          id
-        }
-      }
-      name
-      organizer {
-        name
-        image {
-          url
-          title
-          style {
-            backgroundSize
-          }
-        }
-        social {
-          twitter
-          github
-          facebook
-          linkedin
-          youtube
-        }
-      }
-      partners {
-        firstName
-        lastName
-        name
-        about
-        aboutShort
-        company
-        tagline
-        image {
-          url
-          title
-        }
-        type
-        social {
-          linkedin
-          youtube
-          instagram
-          facebook
-        }
-        keywords
-        location {
-          name
-          about
-          city
-          address
-        }
-        talks {
-          type
-          level
-          title
-          hasTitle
-          description
-          keywords
-          day
-          begin
-          end
-        }
-      }
-      slogan
-      websiteUrl
-      locations {
-        city
-        address
-        name
-      }
-      year
-      startDate
-      endDate
-    }
-  }
-`;
-const header = {
-  borderBottom: "1px solid #dadada",
-  height: "120px",
-  display: "flex",
-  justifyContent: "center",
-  padding: "24px",
-  backgroundColor: "#00b2ff5e",
-};
 export default function EventDetails() {
   const router = useRouter();
-  const eventId = router.query.eventId; // Access the passed data
+  const eventId = router.query.eventId;
   const { loading, error, data } = useQuery(GET_DATA);
   const [event, setEvent] = useState<Conferences>();
   useEffect(() => {
-    if (data) {
+    if (data && data.conferences) {
       setEvent(
         data.conferences.find((item: Conferences) => item.id == eventId)
       );
     }
-  });
+  }, [data]);
 
   return (
     <div>
@@ -135,7 +48,10 @@ export default function EventDetails() {
         <span className="text-4xl flex items-center">{event?.slogan}</span>
       </div>
       <div>
-        <div className="text-2xl flex items-center justify-center p-4">
+        <div
+          className="text-2xl flex items-center justify-center p-4"
+          id="specific-id"
+        >
           {event?.name}
         </div>
         <div className="flex justify-around">
