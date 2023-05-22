@@ -23,7 +23,7 @@ export default function EventDetails() {
   const { loading, error, data } = useQuery(GET_DATA);
   const [event, setEvent] = useState<Conferences>();
   useEffect(() => {
-    if (data && data.conferences) {
+    if (data?.conferences) {
       setEvent(
         data.conferences.find((item: Conferences) => item.id == eventId)
       );
@@ -93,7 +93,7 @@ export default function EventDetails() {
               <span>{event?.organizer.name}</span>
             </div>
             <div className="flex items-center mt-4">
-              {event && event.organizer.social.facebook && (
+              {event?.organizer.social.facebook && (
                 <a href={event.organizer.social.facebook}>
                   <FontAwesomeIcon
                     icon={faFacebook}
@@ -102,7 +102,7 @@ export default function EventDetails() {
                   />
                 </a>
               )}{" "}
-              {event && event.organizer.social.twitter && (
+              {event?.organizer.social.twitter && (
                 <a href={event.organizer.social.twitter}>
                   <FontAwesomeIcon
                     icon={faTwitter}
@@ -111,12 +111,12 @@ export default function EventDetails() {
                   />
                 </a>
               )}
-              {event && event.organizer.social.github && (
+              {event?.organizer.social.github && (
                 <a href={event.organizer.social.github}>
                   <FontAwesomeIcon icon={faGithub} className="px-2" size="xl" />
                 </a>
               )}
-              {event && event.organizer.social.linkedin && (
+              {event?.organizer.social.linkedin && (
                 <a href={event.organizer.social.linkedin}>
                   <FontAwesomeIcon
                     icon={faLinkedin}
@@ -125,7 +125,7 @@ export default function EventDetails() {
                   />
                 </a>
               )}
-              {event && event.organizer.social.youtube && (
+              {event?.organizer.social.youtube && (
                 <a href={event.organizer.social.youtube}>
                   <FontAwesomeIcon
                     icon={faYoutube}

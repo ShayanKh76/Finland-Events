@@ -19,32 +19,26 @@ export default function Events() {
     startDate: null,
     endDate: null,
   });
-  const filteredEvents =
-    data &&
-    data.conferences.filter((event: Conferences) =>
-      event.name.toLowerCase().includes(search)
-    );
+  const filteredEvents = data?.conferences.filter((event: Conferences) =>
+    event.name.toLowerCase().includes(search)
+  );
   const handleSearchInputChange = (search: string) => {
     setSearch(search);
   };
 
   const handleFilter = (startDate: string, endDate: string) => {
-    const filteredData =
-      data &&
-      data.conferences.filter((item: Conferences) => {
-        const itemDate = new Date(item.startDate);
-        if (startDate && endDate) {
-          return (
-            itemDate >= new Date(startDate) && itemDate <= new Date(endDate)
-          );
-        } else if (startDate && !endDate) {
-          return itemDate >= new Date(startDate);
-        } else if (!startDate && endDate) {
-          return itemDate <= new Date(endDate);
-        } else {
-          return null;
-        }
-      });
+    const filteredData = data?.conferences.filter((item: Conferences) => {
+      const itemDate = new Date(item.startDate);
+      if (startDate && endDate) {
+        return itemDate >= new Date(startDate) && itemDate <= new Date(endDate);
+      } else if (startDate && !endDate) {
+        return itemDate >= new Date(startDate);
+      } else if (!startDate && endDate) {
+        return itemDate <= new Date(endDate);
+      } else {
+        return null;
+      }
+    });
     setDate({ startDate, endDate });
     setFilteredItems(filteredData);
   };
@@ -104,8 +98,7 @@ export default function Events() {
                   </div>
                 );
               })
-            : data &&
-              data.conferences.map((item: Conferences, index: number) => {
+            : data?.conferences.map((item: Conferences, index: number) => {
                 return (
                   <div key={index}>
                     <Event confrence={item} />
