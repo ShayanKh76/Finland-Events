@@ -9,23 +9,26 @@ import { Conferences, GET_DATA } from "./events.graphql";
 
 export default function Events() {
   const { loading, error, data } = useQuery(GET_DATA);
-  const [search, setSearch] = useState("");
-  const [showFilter, setShowFilter] = useState(false);
+  const [search, setSearch] = useState<string>("");
+  const [showFilter, setShowFilter] = useState<boolean>(false);
   const [filteredItems, setFilteredItems] = useState([]);
-  const [{ startDate, endDate }, setDate] = useState({
+  const [{ startDate, endDate }, setDate] = useState<{
+    startDate: string | null;
+    endDate: string | null;
+  }>({
     startDate: null,
     endDate: null,
   });
   const filteredEvents =
     data &&
-    data.conferences.filter((event: any) =>
+    data.conferences.filter((event: Conferences) =>
       event.name.toLowerCase().includes(search)
     );
-  const handleSearchInputChange = (event: any) => {
-    setSearch(event.target.value);
+  const handleSearchInputChange = (search: string) => {
+    setSearch(search);
   };
 
-  const handleFilter = (startDate: any, endDate: any) => {
+  const handleFilter = (startDate: string, endDate: string) => {
     const filteredData =
       data &&
       data.conferences.filter((item: Conferences) => {
@@ -67,7 +70,7 @@ export default function Events() {
         <FontAwesomeIcon icon={faSearch} className="mx-2"></FontAwesomeIcon>
         <input
           value={search}
-          onChange={handleSearchInputChange}
+          onChange={(event) => handleSearchInputChange(event?.target.value)}
           placeholder="Search Event"
           className="border rounded w-1/3 p-3 h-8"
         />{" "}

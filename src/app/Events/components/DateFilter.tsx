@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 export default function DateFilter({ onFilter }: any) {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   const handleFilter = () => {
     onFilter(startDate, endDate);
