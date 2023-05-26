@@ -1,5 +1,6 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { AppProps } from "next/app";
+import "../../styles/styles.css";
 
 import "tailwindcss/tailwind.css";
 let client = new ApolloClient({

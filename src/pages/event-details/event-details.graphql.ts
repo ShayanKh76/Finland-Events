@@ -1,83 +1,106 @@
-import { gql } from "@apollo/client";
+import { gql } from "graphql-tag";
 
-export const GET_DATA = gql`
-  {
-    conferences {
-      id
-      series {
-        id
-        name
-        conferences {
-          name
-          id
-        }
-      }
+export const GET_CONFERENCE = gql`
+  query GetConference($conferenceId: ID!) {
+    conference(id: $conferenceId) {
       name
+      series {
+        name
+      }
       organizer {
-        name
-        image {
-          url
-          title
-          style {
-            backgroundSize
-          }
-        }
-        social {
-          twitter
-          github
-          facebook
-          linkedin
-          youtube
-        }
-      }
-      partners {
-        firstName
-        lastName
-        name
-        about
-        aboutShort
-        company
-        tagline
-        image {
-          url
-          title
-        }
-        type
-        social {
-          linkedin
-          youtube
-          instagram
-          facebook
-        }
-        keywords
-        location {
-          name
-          about
-          city
-          address
-        }
-        talks {
-          type
-          level
-          title
-          hasTitle
-          description
-          keywords
-          day
-          begin
-          end
-        }
-      }
-      slogan
-      websiteUrl
-      locations {
-        city
-        address
-        name
+        ...Contact
       }
       year
       startDate
       endDate
+      slogan
+      websiteUrl
+      locations {
+        name
+        about
+        city
+        address
+      }
+      speakers {
+        ...Contact
+      }
     }
+  }
+
+  fragment Contact on Contact {
+    firstName
+    lastName
+    name
+    about
+    aboutShort
+    company
+    tagline
+    image {
+      url
+      title
+    }
+    type
+    social {
+      ...SocialFields
+    }
+    keywords
+    location {
+      ...LocationFields
+    }
+    talks {
+      ...TalkFields
+    }
+    noPhotography
+  }
+
+  fragment LocationFields on Location {
+    name
+    about
+    image {
+      url
+      title
+    }
+    social {
+      ...SocialFields
+    }
+    country {
+      name
+      code
+    }
+    city
+    address
+  }
+
+  fragment TalkFields on Session {
+    type
+    title
+    hasTitle
+    description
+    keywords
+    location {
+      ...LocationFields
+    }
+    day
+    begin
+    end
+  }
+
+  fragment SocialFields on Social {
+    homepage
+    mastodon
+    twitter
+    github
+    facebook
+    googleMaps
+    medium
+    instagram
+    linkedin
+    youtube
+    vk
+    pinterest
+    vimeo
+    dribble
+    devto
+    twitch
   }
 `;

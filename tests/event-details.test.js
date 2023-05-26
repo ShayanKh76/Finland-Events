@@ -1,121 +1,135 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { useRouter } from 'next/router';
 import { MockedProvider, } from '@apollo/client/testing';
-import { GET_DATA } from '../src/pages/event-details/event-details.graphql';
+import { GET_CONFERENCE } from '../src/pages/event-details/event-details.graphql';
 import EventDetails from '../src/pages/event-details';
 import { toBeInTheDocument } from '@testing-library/jest-dom/extend-expect';
 
 const mockEventData = {
-    conferences: [
-        {
-            "id": "freezing-edge-2020",
-            "series": {
-                "id": "freezing-edge",
-                "name": "Freezing Edge",
-                "conferences": [
-                    {
-                        "name": "Freezing Edge 2020",
-                        "id": "freezing-edge-2020",
-                    }
-                ],
+    "conference": {
+        "id": "freezing-edge-2020",
+        "series": {
+            "id": "freezing-edge",
+            "name": "Freezing Edge",
+            "conferences": [
+                {
+                    "name": "Freezing Edge 2020",
+                    "id": "freezing-edge-2020",
+                    "__typename": "Conference"
+                }
+            ],
+            "__typename": "Series"
+        },
+        "name": "Freezing Edge 2020",
+        "organizer": {
+            "name": "React Finland",
+            "image": {
+                "url": "https://api.react-finland.fi/media/react-finland/logo/v2/logo-colored-with-text.svg",
+                "title": null,
+                "style": null,
+                "__typename": "Image"
             },
-            "name": "Freezing Edge 2020",
-            "organizer": {
+            "social": {
+                "twitter": "https://twitter.com/ReactFinland",
+                "github": "https://github.com/ReactFinland",
+                "facebook": null,
+                "linkedin": "https://linkedin.com/in/react-finland",
+                "youtube": "https://www.youtube.com/ReactFinland",
+                "__typename": "Social"
+            },
+            "__typename": "Contact"
+        },
+        "partners": [
+            {
+                "firstName": "React",
+                "lastName": "Finland",
                 "name": "React Finland",
+                "about": "Learn More about React, Explore Finland",
+                "aboutShort": "Learn More about React, Explore Finland",
+                "company": null,
+                "tagline": null,
                 "image": {
                     "url": "https://api.react-finland.fi/media/react-finland/logo/v2/logo-colored-with-text.svg",
                     "title": null,
-                    "style": null,
+                    "__typename": "Image"
                 },
+                "type": [
+                    "ORGANIZER"
+                ],
                 "social": {
-                    "twitter": "https://twitter.com/ReactFinland",
-                    "github": "https://github.com/ReactFinland",
-                    "facebook": null,
                     "linkedin": "https://linkedin.com/in/react-finland",
                     "youtube": "https://www.youtube.com/ReactFinland",
+                    "instagram": null,
+                    "facebook": null,
+                    "__typename": "Social"
                 },
-            },
-            "partners": [
-                {
-                    "firstName": "React",
-                    "lastName": "Finland",
-                    "name": "React Finland",
-                    "about": "Learn More about React, Explore Finland",
-                    "aboutShort": "Learn More about React, Explore Finland",
-                    "company": null,
-                    "tagline": null,
-                    "image": {
-                        "url": "https://api.react-finland.fi/media/react-finland/logo/v2/logo-colored-with-text.svg",
-                        "title": null,
-                    },
-                    "type": [
-                        "ORGANIZER"
-                    ],
-                    "social": {
-                        "linkedin": "https://linkedin.com/in/react-finland",
-                        "youtube": "https://www.youtube.com/ReactFinland",
-                        "instagram": null,
-                        "facebook": null,
-                    },
-                    "keywords": null,
-                    "location": {
-                        "name": null,
-                        "about": null,
-                        "city": "Helsinki",
-                        "address": null,
-                    },
-                    "talks": null,
-                },
-                {
-                    "firstName": "SurviveJS",
-                    "lastName": "",
-                    "name": "SurviveJS",
-                    "about": "SurviveJS will take you from a JavaScript apprentice to master",
-                    "aboutShort": "SurviveJS will take you from a JavaScript apprentice to master.",
-                    "company": null,
-                    "tagline": null,
-                    "image": {
-                        "url": "https://api.react-finland.fi/media/sponsors/survivejs.svg",
-                        "title": null,
-                    },
-                    "type": [
-                        "SPONSOR"
-                    ],
-                    "social": {
-                        "linkedin": null,
-                        "youtube": null,
-                        "instagram": null,
-                        "facebook": null,
-                    },
-                    "keywords": null,
-                    "location": {
-                        "name": null,
-                        "about": null,
-                        "city": "Vienna",
-                        "address": null,
-                    },
-                    "talks": null,
-                }
-            ],
-            "slogan": "The edge isn't bleeding, it's freezing!",
-            "websiteUrl": "https://freezing-edge.fi/",
-            "locations": [
-                {
+                "keywords": null,
+                "location": {
+                    "name": null,
+                    "about": null,
                     "city": "Helsinki",
-                    "address": "Eteläesplanadi 8",
-                    "name": "Amanda",
-                }
-            ],
-            "year": "2020",
-            "startDate": "2020-06-01",
-            "endDate": "2020-06-01",
-        },
-    ],
+                    "address": null,
+                    "__typename": "Location"
+                },
+                "talks": null,
+                "__typename": "Contact"
+            },
+            {
+                "firstName": "SurviveJS",
+                "lastName": "",
+                "name": "SurviveJS",
+                "about": "SurviveJS will take you from a JavaScript apprentice to master",
+                "aboutShort": "SurviveJS will take you from a JavaScript apprentice to master.",
+                "company": null,
+                "tagline": null,
+                "image": {
+                    "url": "https://api.react-finland.fi/media/sponsors/survivejs.svg",
+                    "title": null,
+                    "__typename": "Image"
+                },
+                "type": [
+                    "SPONSOR"
+                ],
+                "social": {
+                    "linkedin": null,
+                    "youtube": null,
+                    "instagram": null,
+                    "facebook": null,
+                    "__typename": "Social"
+                },
+                "keywords": null,
+                "location": {
+                    "name": null,
+                    "about": null,
+                    "city": "Vienna",
+                    "address": null,
+                    "__typename": "Location"
+                },
+                "talks": null,
+                "__typename": "Contact"
+            }
+        ],
+        "slogan": "The edge isn't bleeding, it's freezing!",
+        "websiteUrl": "https://freezing-edge.fi/",
+        "locations": [
+            {
+                "city": "Helsinki",
+                "address": "Eteläesplanadi 8",
+                "name": "Amanda",
+                "__typename": "Location"
+            }
+        ],
+        "year": "2020",
+        "startDate": "2020-06-01",
+        "endDate": "2020-06-01",
+        "__typename": "Conference"
+    }
 };
 
 const mocks = {
     request: {
-        query: GET_DATA,
+        query: GET_CONFERENCE,
+        variables: { "conferenceId": "freezing-edge-2020" },
         eventId: "freezing-edge-2020"
     },
     result: {
