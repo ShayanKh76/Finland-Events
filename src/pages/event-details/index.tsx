@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
@@ -20,6 +20,7 @@ import Link from "next/link";
 import { GET_CONFERENCE } from "./event-details.graphql";
 import { Conferences } from "../../components/Events/components/events.graphql";
 import CircleConnector from "./CircleConnector";
+import { AppStateContext } from "../AppState";
 
 export default function EventDetails() {
   const router = useRouter();
@@ -29,6 +30,8 @@ export default function EventDetails() {
   });
   const [event, setEvent] = useState<Conferences>();
   const [showAllSpeakers, setShowAllSpeakers] = useState(false);
+  const { addToFavourites, removeFromFavourites, Favourites } =
+    useContext(AppStateContext);
   useEffect(() => {
     if (data?.conference!) {
       setEvent(data.conference);
@@ -36,6 +39,13 @@ export default function EventDetails() {
   }, [data]);
   const navigateToAnotherPage = () => {
     router.push("/", undefined, { shallow: true });
+  };
+  const handleFavourites = () => {
+    if (Favourites.find((item: string) => item == event?.id)) {
+      removeFromFavourites(event?.id);
+    } else {
+      addToFavourites(event?.id);
+    }
   };
 
   return (
@@ -221,6 +231,22 @@ export default function EventDetails() {
                         className="mx-2"
                       />
                     </div>
+                  </div>
+                  <div className="flex justify-center mt-20">
+                    <button
+                      className="px-4 py-3 rounded-lg"
+                      style={
+                        Favourites.find((item: string) => item == event.id)
+                          ? { color: "red", border: "1px solid red" }
+                          : { color: "#003a7f", border: "1px solid #003a7f" }
+                      }
+                      onClick={handleFavourites}
+                    >
+                      {Favourites.find((item: string) => item == event.id)
+                        ? "Remove From "
+                        : "Add To "}
+                      Favourites
+                    </button>
                   </div>
                 </div>
               </div>
