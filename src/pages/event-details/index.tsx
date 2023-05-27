@@ -11,11 +11,15 @@ import {
   faLinkedin,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
-import { faArrowLeft, faCalendar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faCalendar,
+  faMicrophoneSlash,
+} from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { GET_CONFERENCE } from "./event-details.graphql";
-import { header } from "../../../public/css/event-details.styles";
 import { Conferences } from "../../components/Events/components/events.graphql";
+import CircleConnector from "./CircleConnector";
 
 export default function EventDetails() {
   const router = useRouter();
@@ -24,6 +28,7 @@ export default function EventDetails() {
     variables: { conferenceId: eventId },
   });
   const [event, setEvent] = useState<Conferences>();
+  const [showAllSpeakers, setShowAllSpeakers] = useState(false);
   useEffect(() => {
     if (data?.conference!) {
       setEvent(data.conference);
@@ -35,118 +40,198 @@ export default function EventDetails() {
 
   return (
     <div>
-      {loading && (
+      {event ? (
+        <div>
+          <div className="flex justify-center">
+            <div
+              className="rounded-xl bg-black overflow-hidden"
+              style={{ width: "85%", height: "500px" }}
+            >
+              <button
+                onClick={navigateToAnotherPage}
+                className="flex items-center absolute top-40 text-base z-10 text-white "
+                style={{ left: "10%" }}
+              >
+                <FontAwesomeIcon
+                  icon={faArrowLeft}
+                  color="white"
+                  className="mr-1"
+                ></FontAwesomeIcon>
+                Back
+              </button>
+
+              <Image
+                src={`/assets/images/${event?.id}.jpg`}
+                alt={event?.id || "photo"}
+                width={1200}
+                height={800}
+                objectFit="cover"
+                layout="responsive"
+                style={{ width: "90%" }}
+                className="rounded-xl opacity-30 "
+              />
+
+              <div className=" absolute text-white text-4xl eventDetailsHeader">
+                <div className="p-4">{event?.name}</div>
+                <div className="p-4">{event?.slogan}</div>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <div
+              className=" grid grid-cols-6 gap-10 px-10 my-12"
+              style={{ width: "85%" }}
+            >
+              <div className=" col-span-4">
+                <div className="mb-6">Speakers</div>
+                {event?.speakers.length! > 0 ? (
+                  <div>
+                    {event?.speakers
+                      .slice(0, showAllSpeakers ? undefined : 4)
+                      .map((speaker, index) => (
+                        <div key={index} className="grid grid-cols-6">
+                          <div
+                            className={`col-span-2 flex justify-center ${
+                              index % 2 === 0 ? "order-first" : "order-last"
+                            }`}
+                          >
+                            <div className="text-center flex justify-center items-center">
+                              <div>
+                                {" "}
+                                {event && (
+                                  <Image
+                                    src={speaker.image.url}
+                                    width={120}
+                                    height={120}
+                                    alt={speaker.image.url}
+                                    className=" rounded-full"
+                                  />
+                                )}
+                                <span className=" text-xs ">
+                                  {" "}
+                                  {speaker.name}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className=" col-span-2">
+                            <CircleConnector />
+                          </div>
+                          <div
+                            className={`col-span-2 flex justify-${
+                              speaker.aboutShort != "" ? "start" : "center"
+                            }  items-center ${
+                              index % 2 === 0 ? "order-last" : "order-first"
+                            }`}
+                            style={{ maxHeight: "176px" }}
+                          >
+                            <div className="truncate-6-lines">
+                              {speaker.aboutShort !== ""
+                                ? speaker.aboutShort
+                                : "---"}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    <div className="flex justify-center mt-6 ">
+                      <button
+                        className="border rounded p-2"
+                        onClick={() => setShowAllSpeakers(!showAllSpeakers)}
+                      >
+                        Show {showAllSpeakers ? "less" : "more"}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex justify-center mt-10">
+                    <div>
+                      <div className="flex justify-center mb-3">
+                        <FontAwesomeIcon icon={faMicrophoneSlash} size="2xl" />
+                      </div>
+                      <div>No Speakers</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className=" col-span-2">
+                <div>Event Location</div>
+                <div>
+                  <iframe
+                    width="100%"
+                    height="200"
+                    frameBorder="0"
+                    scrolling="no"
+                    marginHeight={0}
+                    marginWidth={0}
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=24.029846191406254%2C59.85309220083689%2C25.842590332031254%2C60.47752543910902&amp;layer=mapnik"
+                    className=" rounded-lg drop-shadow-md my-4"
+                  ></iframe>
+
+                  {event?.locations.length > 0 && (
+                    <div>
+                      {" "}
+                      <div className="cardHeader mb-2">
+                        {event?.locations[0].about}{" "}
+                      </div>
+                      <div className="cardBody mb-4">
+                        {event?.locations[0].country.name +
+                          ", " +
+                          event?.locations[0].city +
+                          ", " +
+                          event?.locations[0].address}
+                      </div>
+                    </div>
+                  )}
+
+                  {event?.keynotes.length! > 0 && (
+                    <div>
+                      <div className="my-2">Tags</div>
+                      <div>
+                        {event?.keynotes.map((tag, index) => (
+                          <span key={index} className="flex flex-wrap my-1">
+                            {tag.keywords.map((item, tagIndex) => (
+                              <span className="chipTags" key={tagIndex}>
+                                {item}
+                              </span>
+                            ))}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="mt-6">
+                    Share With Friends
+                    <div>
+                      <FontAwesomeIcon
+                        size="xl"
+                        icon={faFacebook}
+                        color="#4267B2"
+                        className="mx-2 mt-4"
+                      />
+                      <FontAwesomeIcon
+                        size="xl"
+                        icon={faTwitter}
+                        color="#1DA1F2"
+                        className="mx-2"
+                      />
+                      <FontAwesomeIcon
+                        size="xl"
+                        icon={faLinkedin}
+                        color="#0077B5"
+                        className="mx-2"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
         <div className="fixed inset-0 flex items-center justify-center bg-white">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2  border-blue-900"></div>
         </div>
       )}
-      {!loading && (
-        <div>
-          <button
-            onClick={navigateToAnotherPage}
-            className="flex absolute left-5 top-9 text-2xl"
-          >
-            <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
-          </button>
-        </div>
-      )}
-      <div style={header}>
-        <span className="text-4xl flex items-center">{event?.slogan}</span>
-      </div>
-      <div>
-        <div
-          className="text-2xl flex items-center justify-center p-4"
-          id="specific-id"
-        >
-          {event?.name}
-        </div>
-        <div className="flex justify-around">
-          <span>
-            <FontAwesomeIcon
-              icon={faCalendar}
-              className="mx-2"
-            ></FontAwesomeIcon>{" "}
-            Start Date: {event?.startDate}
-          </span>
-          <span>
-            {" "}
-            <FontAwesomeIcon
-              icon={faCalendar}
-              className="mx-2"
-            ></FontAwesomeIcon>{" "}
-            End Date: {event?.endDate}
-          </span>
-        </div>
-      </div>
-      <div className="p-6 flex justify-around">
-        <div className="flex justify-center ">
-          <div
-            className=" mt-6 border p-3 rounded-md"
-            style={{ minHeight: "190px", minWidth: "185px" }}
-          >
-            organizer:
-            <br />
-            <div>
-              {event && (
-                <Image
-                  src={event.organizer.image.url}
-                  alt={event.organizer.name}
-                  width={150}
-                  height={150}
-                  className="mb-4"
-                />
-              )}
-              <span>{event?.organizer.name}</span>
-            </div>
-            <div className="flex items-center mt-4">
-              {event?.organizer.social.facebook && (
-                <a href={event.organizer.social.facebook}>
-                  <FontAwesomeIcon
-                    icon={faFacebook}
-                    className="px-2"
-                    size="xl"
-                  />
-                </a>
-              )}{" "}
-              {event?.organizer.social.twitter && (
-                <a href={event.organizer.social.twitter}>
-                  <FontAwesomeIcon
-                    icon={faTwitter}
-                    className="px-2"
-                    size="xl"
-                  />
-                </a>
-              )}
-              {event?.organizer.social.github && (
-                <a href={event.organizer.social.github}>
-                  <FontAwesomeIcon icon={faGithub} className="px-2" size="xl" />
-                </a>
-              )}
-              {event?.organizer.social.linkedin && (
-                <a href={event.organizer.social.linkedin}>
-                  <FontAwesomeIcon
-                    icon={faLinkedin}
-                    className="px-2"
-                    size="xl"
-                  />
-                </a>
-              )}
-              {event?.organizer.social.youtube && (
-                <a href={event.organizer.social.youtube}>
-                  <FontAwesomeIcon
-                    icon={faYoutube}
-                    className="px-2"
-                    size="xl"
-                  />
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex justify-center text-red-600">
-        <a href={event?.websiteUrl}>Event Website</a>
-      </div>
     </div>
   );
 }

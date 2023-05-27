@@ -3,6 +3,7 @@ import { gql } from "graphql-tag";
 export const GET_CONFERENCE = gql`
   query GetConference($conferenceId: ID!) {
     conference(id: $conferenceId) {
+      id
       name
       series {
         name
@@ -22,7 +23,33 @@ export const GET_CONFERENCE = gql`
         address
       }
       speakers {
-        ...Contact
+        firstName
+        lastName
+        name
+        about
+        aboutShort
+        company
+        tagline
+        image {
+          url
+          title
+        }
+        type
+        social {
+          ...SocialFields
+        }
+        keywords
+
+        talks {
+          ...TalkFields
+        }
+        noPhotography
+      }
+      locations {
+        ...Location
+      }
+      keynotes {
+        ...TalkFields
       }
     }
   }
@@ -44,9 +71,6 @@ export const GET_CONFERENCE = gql`
       ...SocialFields
     }
     keywords
-    location {
-      ...LocationFields
-    }
     talks {
       ...TalkFields
     }
@@ -102,5 +126,22 @@ export const GET_CONFERENCE = gql`
     dribble
     devto
     twitch
+  }
+  fragment Location on Location {
+    name
+    about
+    image {
+      url
+      title
+    }
+    social {
+      ...SocialFields
+    }
+    country {
+      name
+      code
+    }
+    city
+    address
   }
 `;

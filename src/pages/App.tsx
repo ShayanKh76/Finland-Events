@@ -11,9 +11,7 @@ export default function App() {
     <>
       {data ? (
         <div>
-          <Header />
           <Events loading={loading} conferences={data?.conferences} />
-          <Footer />
         </div>
       ) : (
         <div className="fixed inset-0 flex items-center justify-center bg-white">

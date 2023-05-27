@@ -103,7 +103,7 @@ export default function Events({
                       <div key={index}>
                         <Event
                           conference={item}
-                          image={`/assets/images/${index + 1}.jpg`}
+                          image={`/assets/images/${item.id}.jpg`}
                         />
                       </div>
                     );
@@ -114,7 +114,7 @@ export default function Events({
                       <div key={index}>
                         <Event
                           conference={item}
-                          image={`/assets/images/${index + 1}.jpg`}
+                          image={`/assets/images/${item.id}.jpg`}
                         />
                       </div>
                     );
@@ -124,7 +124,7 @@ export default function Events({
                       <div key={index}>
                         <Event
                           conference={item}
-                          image={`/assets/images/${index + 1}.jpg`}
+                          image={`/assets/images/${item.id}.jpg`}
                         />
                       </div>
                     );

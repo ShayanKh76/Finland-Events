@@ -37,23 +37,18 @@ export default function Event({
             className="w-full"
           />
         </div>
-        <div style={{ minHeight: "90px" }} className="py-4 px-2 flex">
+        <div style={{ minHeight: "100px" }} className="py-4 px-2 flex">
           <div className=" h-full mr-5">
             <div className="my-1 text-blue-700 uppercase text-sm">{month}</div>
             <div className="font-bold">{day}</div>
           </div>
           <div className=" h-full text-left">
             <div className="cardHeader"> {conference.name}</div>
-            <div className="cardBody"> {conference.slogan}</div>
+            <div className="cardBody truncate-2-lines">
+              {" "}
+              {conference.slogan}
+            </div>
           </div>
-          {/* <div className="m-2">
-            <FontAwesomeIcon icon={faUser} className="mx-2" />
-            {conference.name}
-          </div>
-          <div className="m-2">
-            <FontAwesomeIcon icon={faCalendar} className="mx-2" />
-            {conference.startDate.replaceAll("-", "/")}
-          </div> */}
         </div>
       </div>
     </button>

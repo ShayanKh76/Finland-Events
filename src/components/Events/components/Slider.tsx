@@ -18,9 +18,9 @@ export default function Slider({
     router.push(`/event-details?eventId=${conferences[index].id}`);
   };
   const bgImages = [
-    { src: "/assets/images/1.jpg", alt: "First Img" },
-    { src: "/assets/images/2.jpg", alt: "Second Img" },
-    { src: "/assets/images/3.jpg", alt: "Third Img" },
+    { src: "/assets/images/freezing-edge-2020.jpg", alt: "First Img" },
+    { src: "/assets/images/future-frontend-2023.jpg", alt: "Second Img" },
+    { src: "/assets/images/techmovienight.jpg", alt: "Third Img" },
   ];
 
   return (

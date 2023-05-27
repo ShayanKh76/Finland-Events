@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import "../../styles/styles.css";
 
 import "tailwindcss/tailwind.css";
+import Layout from "./layout";
 let client = new ApolloClient({
   uri: "https://api.react-finland.fi/graphql/",
   cache: new InMemoryCache(),
@@ -10,7 +11,9 @@ let client = new ApolloClient({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ApolloProvider>
   );
 }
