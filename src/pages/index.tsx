@@ -1,16 +1,15 @@
 "use client";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import App from "./App";
-
-let client = new ApolloClient({
-  uri: "https://api.react-finland.fi/graphql/",
-  cache: new InMemoryCache(),
-});
+import { client } from "@/components/Events/Events.graphql";
+import React from "react";
 
 export default function Home() {
   return (
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
+    <React.StrictMode>
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
+    </React.StrictMode>
   );
 }

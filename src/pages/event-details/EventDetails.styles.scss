@@ -1,0 +1,64 @@
+.eventDetails {
+  .eventDetailsHeader {
+    width: 85%;
+    height: 500px;
+
+    .backBtn {
+      left: 10%;
+    }
+
+    .headerPhoto {
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .eventDetailsTitle {
+      left: 15%;
+      top: 30%;
+
+
+    }
+  }
+
+  .eventDetailsBody {
+    .mainBody {
+      width: 85%;
+
+      .speakers {
+        .speakerAbout {
+          max-height: 176px;
+
+          .truncate-6-lines {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 6;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+
+      .details {
+        .chipTags {
+          background: #efeff3;
+          padding: 8px;
+          margin: 4px;
+          border-radius: 8px;
+          font-size: 14px;
+        }
+
+        .addToFavourite {
+          color: #003a7f;
+          border: 1px solid #003a7f;
+        }
+
+        .removeFromFavourite {
+          color: red;
+          border: 1px solid red
+        }
+      }
+    }
+  }
+
+
+}

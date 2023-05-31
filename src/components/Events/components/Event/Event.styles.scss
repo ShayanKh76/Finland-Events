@@ -1,0 +1,24 @@
+.event {
+
+
+    .cardTitle {
+        border-bottom: 1px solid #dadada;
+        height: 120px;
+    }
+
+    .cardText {
+        min-height: 100px;
+
+        .eventName {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .eventBody {
+            font-size: 12px;
+            font-weight: 400;
+            color: #565656;
+            margin-top: 8px;
+        }
+    }
+}

@@ -1,0 +1,20 @@
+.eventsSlider {
+    width: 85%;
+    height: 500px;
+
+    .slides {
+        display: flex !important;
+        width: 90%;
+        height: 500px !important;
+
+        .slideImage {
+            width: 90%;
+        }
+
+        .slideText {
+            left: 15%;
+        }
+    }
+
+
+}

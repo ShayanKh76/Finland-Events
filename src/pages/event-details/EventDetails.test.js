@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { useRouter } from 'next/router';
 import { MockedProvider, } from '@apollo/client/testing';
-import { GET_CONFERENCE } from '../src/pages/event-details/event-details.graphql';
-import EventDetails from '../src/pages/event-details';
+import { GET_CONFERENCE } from './EventDetails';
+import EventDetails from '.';
 import { toBeInTheDocument } from '@testing-library/jest-dom/extend-expect';
 
 const mockEventData = {

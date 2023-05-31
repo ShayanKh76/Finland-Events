@@ -1,7 +1,8 @@
-import { gql } from "@apollo/client";
-
+import { ApolloClient, InMemoryCache, gql, makeVar } from "@apollo/client";
+export const favouritesEventVar = makeVar<string[]>([]);
 export type Conferences = {
   id: string;
+  isInFavourite: boolean;
   series: {
     id: number;
     name: string;
@@ -70,6 +71,26 @@ export type Conferences = {
     noPhotography: boolean;
   }[];
 };
+export const cache = new InMemoryCache({
+  typePolicies: {
+    Conference: {
+      fields: {
+        isInFavourite: {
+          read(_, { readField }) {
+            const eventId = readField<string>("id");
+
+            return favouritesEventVar().includes(eventId!);
+          },
+        },
+      },
+    },
+  },
+});
+export const client = new ApolloClient({
+  uri: "https://api.react-finland.fi/graphql/",
+  cache,
+});
+
 export const GET_DATA = gql`
   {
     conferences {
@@ -83,6 +104,7 @@ export const GET_DATA = gql`
       }
       year
       startDate
+      isInFavourite @client
     }
   }
 `;

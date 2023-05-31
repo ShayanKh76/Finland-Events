@@ -1,12 +1,12 @@
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
-import React from "react";
+import React, { ReactNode } from "react";
 
-const Layout = ({ children }: { children: any }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div>
       <Header />
-      <main>{children}</main>
+      <main className=" mt-28">{children}</main>
       <Footer />
     </div>
   );

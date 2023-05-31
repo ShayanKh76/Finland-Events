@@ -2,25 +2,23 @@
 import Image from "next/image";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
   faTwitter,
-  faGithub,
   faLinkedin,
-  faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import {
   faArrowLeft,
-  faCalendar,
   faMicrophoneSlash,
 } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
-import { GET_CONFERENCE } from "./event-details.graphql";
-import { Conferences } from "../../components/Events/components/events.graphql";
-import CircleConnector from "./CircleConnector";
-import { AppStateContext } from "../AppState";
+import { GET_CONFERENCE } from "./EventDetails";
+import {
+  Conferences,
+  favouritesEventVar,
+} from "../../components/Events/Events.graphql";
+import CircleConnector from "../../components/CircleConnector";
 
 export default function EventDetails() {
   const router = useRouter();
@@ -30,8 +28,6 @@ export default function EventDetails() {
   });
   const [event, setEvent] = useState<Conferences>();
   const [showAllSpeakers, setShowAllSpeakers] = useState(false);
-  const { addToFavourites, removeFromFavourites, Favourites } =
-    useContext(AppStateContext);
   useEffect(() => {
     if (data?.conference!) {
       setEvent(data.conference);
@@ -41,26 +37,26 @@ export default function EventDetails() {
     router.push("/", undefined, { shallow: true });
   };
   const handleFavourites = () => {
-    if (Favourites.find((item: string) => item == event?.id)) {
-      removeFromFavourites(event?.id);
-    } else {
-      addToFavourites(event?.id);
-    }
+    const currentFavouriteEvent = favouritesEventVar();
+    favouritesEventVar(
+      event?.isInFavourite
+        ? currentFavouriteEvent.filter(
+            (conferenceId: string) => conferenceId !== event.id
+          )
+        : event && [...currentFavouriteEvent, event.id]
+    );
   };
 
   return (
     <div>
+      {event?.isInFavourite}
       {event ? (
-        <div>
+        <div className="eventDetails">
           <div className="flex justify-center">
-            <div
-              className="rounded-xl bg-black overflow-hidden"
-              style={{ width: "85%", height: "500px" }}
-            >
+            <div className="rounded-xl bg-black overflow-hidden eventDetailsHeader">
               <button
                 onClick={navigateToAnotherPage}
-                className="flex items-center absolute top-40 text-base z-10 text-white "
-                style={{ left: "10%" }}
+                className="flex items-center absolute top-40 text-base z-10 text-white backBtn"
               >
                 <FontAwesomeIcon
                   icon={faArrowLeft}
@@ -75,24 +71,18 @@ export default function EventDetails() {
                 alt={event?.id || "photo"}
                 width={1200}
                 height={800}
-                objectFit="cover"
-                layout="responsive"
-                style={{ width: "90%" }}
-                className="rounded-xl opacity-30 "
+                className="rounded-xl opacity-30 headerPhoto"
               />
 
-              <div className=" absolute text-white text-4xl eventDetailsHeader">
+              <div className=" absolute text-white text-4xl eventDetailsTitle">
                 <div className="p-4">{event?.name}</div>
                 <div className="p-4">{event?.slogan}</div>
               </div>
             </div>
           </div>
-          <div className="flex justify-center">
-            <div
-              className=" grid grid-cols-6 gap-10 px-10 my-12"
-              style={{ width: "85%" }}
-            >
-              <div className=" col-span-4">
+          <div className="flex justify-center eventDetailsBody">
+            <div className=" grid grid-cols-6 gap-10 px-10 my-12 mainBody">
+              <div className=" col-span-4 speakers">
                 <div className="mb-6">Speakers</div>
                 {event?.speakers.length! > 0 ? (
                   <div>
@@ -128,12 +118,11 @@ export default function EventDetails() {
                             <CircleConnector />
                           </div>
                           <div
-                            className={`col-span-2 flex justify-${
+                            className={`speakerAbout col-span-2 flex justify-${
                               speaker.aboutShort != "" ? "start" : "center"
                             }  items-center ${
                               index % 2 === 0 ? "order-last" : "order-first"
                             }`}
-                            style={{ maxHeight: "176px" }}
                           >
                             <div className="truncate-6-lines">
                               {speaker.aboutShort !== ""
@@ -163,7 +152,7 @@ export default function EventDetails() {
                   </div>
                 )}
               </div>
-              <div className=" col-span-2">
+              <div className=" col-span-2 details">
                 <div>Event Location</div>
                 <div>
                   <iframe
@@ -234,17 +223,14 @@ export default function EventDetails() {
                   </div>
                   <div className="flex justify-center mt-20">
                     <button
-                      className="px-4 py-3 rounded-lg"
-                      style={
-                        Favourites.find((item: string) => item == event.id)
-                          ? { color: "red", border: "1px solid red" }
-                          : { color: "#003a7f", border: "1px solid #003a7f" }
-                      }
+                      className={`px-4 py-3 rounded-lg ${
+                        event.isInFavourite
+                          ? "removeFromFavourite"
+                          : "addToFavourite"
+                      }`}
                       onClick={handleFavourites}
                     >
-                      {Favourites.find((item: string) => item == event.id)
-                        ? "Remove From "
-                        : "Add To "}
+                      {event.isInFavourite ? "Remove From " : "Add To "}
                       Favourites
                     </button>
                   </div>

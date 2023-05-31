@@ -4,6 +4,7 @@ export const GET_CONFERENCE = gql`
   query GetConference($conferenceId: ID!) {
     conference(id: $conferenceId) {
       id
+      isInFavourite @client
       name
       series {
         name

@@ -6,7 +6,7 @@ export default function DateFilter({
   onFilter,
   showSearch,
 }: {
-  onFilter: any;
+  onFilter: (startDate?: string, endDate?: string) => void;
   showSearch: boolean;
 }) {
   const [startDate, setStartDate] = useState<string>("");
@@ -29,7 +29,7 @@ export default function DateFilter({
 
   return (
     <div
-      className={`flex items-center  text-slate-100 my-1 dataFilterSlide w-full ${
+      className={`flex items-center  text-slate-100 my-1 dataFilterSlide w-full dateFilter ${
         showSearch ? "hiddenItem" : ""
       } `}
     >

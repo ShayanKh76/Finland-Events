@@ -1,8 +1,6 @@
-import Header from "../components/Header/Header";
 import Events from "../components/Events/Events";
 import { useQuery } from "@apollo/client";
-import { GET_DATA } from "../components/Events/components/events.graphql";
-import Footer from "../components/Footer/Footer";
+import { GET_DATA } from "../components/Events/Events.graphql";
 
 export default function App() {
   const { loading, error, data } = useQuery(GET_DATA);

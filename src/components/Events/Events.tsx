@@ -1,11 +1,11 @@
 "use client";
-import Event from "./components/Event";
+import Event from "./components/Event/Event";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faSearch, faX } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faX } from "@fortawesome/free-solid-svg-icons";
 import DateFilter from "./components/DateFilter/DateFilter";
-import { Conferences } from "./components/events.graphql";
-import Slider from "./components/Slider";
+import { Conferences } from "./Events.graphql";
+import Slider from "./components/Slider/Slider";
 
 export default function Events({
   loading,
@@ -18,8 +18,8 @@ export default function Events({
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [filteredItems, setFilteredItems] = useState<Conferences[]>([]);
   const [{ startDate, endDate }, setDate] = useState<{
-    startDate: string | null;
-    endDate: string | null;
+    startDate?: string | null;
+    endDate?: string | null;
   }>({
     startDate: null,
     endDate: null,
@@ -32,7 +32,7 @@ export default function Events({
     setFilteredItems(conferences);
   };
 
-  const handleFilter = (startDate: string, endDate: string) => {
+  const handleFilter = (startDate?: string, endDate?: string) => {
     const filteredData = conferences?.filter((item: Conferences) => {
       const itemDate = new Date(item.startDate);
       if (startDate && endDate) {
@@ -55,12 +55,9 @@ export default function Events({
   return (
     <>
       <Slider conferences={conferences} />
-      <div style={{ background: "rgb(248 248 250)" }}>
+      <div className="eventsMain">
         <div className="flex justify-center items-center mt-4 ">
-          <div
-            style={{ background: "#003a7f", height: "113px" }}
-            className="flex justify-between rounded-xl z-10 -mt-16 relative w-3/4 overflow-hidden"
-          >
+          <div className="flex justify-between rounded-xl z-10 -mt-16 relative w-3/4 overflow-hidden filterSection">
             <DateFilter onFilter={handleFilter} showSearch={showSearch} />
 
             <div

@@ -4,10 +4,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 export default function Footer() {
   return (
     <>
-      <div
-        className="text-center p-10 text-white"
-        style={{ background: "#003a7f" }}
-      >
+      <div className="text-center p-10 text-white footer">
         Made with
         <FontAwesomeIcon
           icon={faHeart}
