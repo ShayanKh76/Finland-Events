@@ -3,7 +3,7 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faX } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { favouritesEventVar } from "../../Events.graphql";
+import { favouritesEventVar, saveFavEvents } from "../../Events.graphql";
 import { MouseEvent } from "react";
 
 export default function Event({
@@ -30,6 +30,7 @@ export default function Event({
           )
         : [...currentFavouriteEvent, conference.id]
     );
+    saveFavEvents();
   };
   return (
     <button

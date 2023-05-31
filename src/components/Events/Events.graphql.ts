@@ -7,7 +7,13 @@ import {
 } from "@apollo/client";
 import fetch from "cross-fetch";
 
-export const favouritesEventVar = makeVar<string[]>([]);
+export const favouritesEventVar = makeVar<string[]>(
+  JSON.parse(
+    typeof window !== "undefined"
+      ? localStorage.getItem("favouriteEvents")!
+      : "[]"
+  ) || []
+);
 export type Conferences = {
   id: string;
   isInFavourite: boolean;
@@ -86,6 +92,7 @@ export const cache = new InMemoryCache({
         isInFavourite: {
           read(_, { readField }) {
             const eventId = readField<string>("id");
+            console.log(window.localStorage.getItem("favouriteEvents"));
 
             return favouritesEventVar().includes(eventId!);
           },
@@ -94,6 +101,12 @@ export const cache = new InMemoryCache({
     },
   },
 });
+export const saveFavEvents = () => {
+  window.localStorage.setItem(
+    "favouriteEvents",
+    JSON.stringify(favouritesEventVar())
+  );
+};
 const httpLink = new HttpLink({
   uri: "https://api.react-finland.fi/graphql/",
   fetch,
