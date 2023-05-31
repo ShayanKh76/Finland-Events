@@ -1,4 +1,12 @@
-import { ApolloClient, InMemoryCache, gql, makeVar } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  gql,
+  makeVar,
+  HttpLink,
+} from "@apollo/client";
+import fetch from "cross-fetch";
+
 export const favouritesEventVar = makeVar<string[]>([]);
 export type Conferences = {
   id: string;
@@ -86,9 +94,13 @@ export const cache = new InMemoryCache({
     },
   },
 });
-export const client = new ApolloClient({
+const httpLink = new HttpLink({
   uri: "https://api.react-finland.fi/graphql/",
+  fetch,
+});
+export const client = new ApolloClient({
   cache,
+  link: httpLink,
 });
 
 export const GET_DATA = gql`

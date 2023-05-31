@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
-import { GET_DATA } from '../../src/app/Events/events.graphql';
+import { GET_DATA } from './Events.graphql';
 const mockEventData = {
     conferences: [
         {

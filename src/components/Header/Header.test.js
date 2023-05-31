@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import Header from '../../src/app/Header/Header';
+import Header from './Header';
 import { toBeInTheDocument } from '@testing-library/jest-dom/extend-expect';
 
 describe('Home Page Header', () => {
